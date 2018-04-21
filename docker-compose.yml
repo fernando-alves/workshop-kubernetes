@@ -1,0 +1,14 @@
+version: '3.2'
+
+services:
+  app:
+    image: k8s-workshop/app
+    restart: always
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PASSWORD
+    ports:
+      - 9000

@@ -1,0 +1,12 @@
+version: '3.2'
+
+services:
+  app:
+    environment:
+      - REDIS_HOST=redis
+    ports:
+      - 9000:9000
+    depends_on:
+      - redis
+  redis:
+    image: redis:alpine
