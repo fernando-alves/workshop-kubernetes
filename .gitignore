@@ -17,3 +17,6 @@ coverage.*
 junit.xml
 public
 scanLogs
+
+terraform/.terraform
+secret.tfvars
