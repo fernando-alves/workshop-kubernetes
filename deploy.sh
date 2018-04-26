@@ -4,8 +4,10 @@ set -euo pipefail
 
 function display_usage {
   echo "Usage: $(basename "$0") <command>"
-  echo ' - build       Builds app'
-  echo ' - provision   Creates/updates kubernetes cluster on GCP'
+  echo ' - build        Builds app'
+  echo ' - provision    Creates/updates kubernetes cluster on GCP'
+  echo ' - credentials  Configure credentials for kubectl'
+  echo ' - pods         List pods'
   exit 1
 }
 
