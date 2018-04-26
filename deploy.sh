@@ -30,6 +30,14 @@ function provision {
   popd
 }
 
+function credentials {
+  gcloud beta container clusters get-credentials workshop-cluster --zone europe-west1-c
+}
+
+function pods {
+  kubectl get pods
+}
+
 readonly command="${1:-}"
 
 case "$command" in
@@ -38,6 +46,12 @@ case "$command" in
     ;;
   provision)
     provision
+    ;;
+  credentials)
+    credentials
+    ;;
+  pods)
+    pods
     ;;
   *)
     display_usage
