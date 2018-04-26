@@ -40,6 +40,10 @@ function pods {
   kubectl get pods
 }
 
+function deploy {
+  kubectl apply -f kubernetes/
+}
+
 readonly command="${1:-}"
 
 case "$command" in
@@ -54,6 +58,9 @@ case "$command" in
     ;;
   pods)
     pods
+    ;;
+  deploy)
+    deploy
     ;;
   *)
     display_usage
