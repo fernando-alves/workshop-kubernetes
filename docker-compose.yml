@@ -2,7 +2,7 @@ version: '3.2'
 
 services:
   app:
-    image: k8s-workshop/app
+    image: eu.gcr.io/k8s-worshop/app
     restart: always
     build:
       context: .

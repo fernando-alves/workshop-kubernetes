@@ -1,0 +1,22 @@
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+      - name: app
+        image: eu.gcr.io/k8s-worshop/app
+        ports:
+          - containerPort: 9000
+        env:
+          - name: REDIS_HOST
+            value: redis

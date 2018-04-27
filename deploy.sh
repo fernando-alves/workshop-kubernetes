@@ -40,8 +40,17 @@ function pods {
   kubectl get pods
 }
 
+function services {
+  kubectl get services
+}
+
 function deploy {
   kubectl apply -f kubernetes/
+}
+
+function publish {
+  gcloud auth configure-docker
+  docker push eu.gcr.io/k8s-worshop/app
 }
 
 readonly command="${1:-}"
@@ -61,6 +70,9 @@ case "$command" in
     ;;
   deploy)
     deploy
+    ;;
+  publish)
+    publish
     ;;
   *)
     display_usage
