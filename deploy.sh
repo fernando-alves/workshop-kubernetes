@@ -8,6 +8,7 @@ function display_usage {
   echo ' - provision    Creates/updates kubernetes cluster on GCP'
   echo ' - credentials  Configure credentials for kubectl'
   echo ' - pods         List pods'
+  echo ' - services     List services'
   exit 1
 }
 
