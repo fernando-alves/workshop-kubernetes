@@ -4,11 +4,12 @@ set -euo pipefail
 
 function display_usage {
   echo "Usage: $(basename "$0") <command>"
-  echo ' - build        Builds app'
-  echo ' - provision    Creates/updates kubernetes cluster on GCP'
-  echo ' - credentials  Configure credentials for kubectl'
-  echo ' - pods         List pods'
-  echo ' - services     List services'
+  echo ' - build                      Builds app'
+  echo ' - provision                  Creates/updates kubernetes cluster on GCP'
+  echo ' - credentials                Configure credentials for kubectl'
+  echo ' - pods                       List pods'
+  echo ' - services                   List services'
+  echo ' - scale [number_of_replicas] Scale app to the quantity specified'
   exit 1
 }
 
@@ -54,6 +55,15 @@ function publish {
   docker push eu.gcr.io/k8s-worshop/app
 }
 
+function scale {
+  local replicas="${1:-}"
+  if [ -z "${replicas}" ] ; then
+    echo "Missing parameter: number_of_replicas"
+    exit 1
+  fi
+  kubectl scale deployment app --replicas="${replicas}"
+}
+
 readonly command="${1:-}"
 
 case "$command" in
@@ -74,6 +84,9 @@ case "$command" in
     ;;
   publish)
     publish
+    ;;
+  scale)
+    scale "${2:-}"
     ;;
   *)
     display_usage
