@@ -4,17 +4,21 @@ set -euo pipefail
 
 function display_usage {
   echo "Usage: $(basename "$0") <command>"
-  echo ' - build                      Builds app'
+  echo ' - build [tag]                Builds app with tag (default: latest)'
+  echo ' - publish [tag]              Publishes image to regitry (default: lates)'
   echo ' - provision                  Creates/updates kubernetes cluster on GCP'
   echo ' - credentials                Configure credentials for kubectl'
   echo ' - pods                       List pods'
   echo ' - services                   List services'
   echo ' - scale [number_of_replicas] Scale app to the quantity specified'
+  echo ' - rollback                   Rollsback app to previous version'
   exit 1
 }
 
 function build {
+  local tag="${1:-latest}"
   docker-compose build
+  docker tag eu.gcr.io/k8s-worshop/app:latest eu.gcr.io/k8s-worshop/app:"${tag}"
 }
 
 function is_cluster_password_set {
@@ -51,8 +55,9 @@ function deploy {
 }
 
 function publish {
+  local tag="${1:-latest}"
   gcloud auth configure-docker
-  docker push eu.gcr.io/k8s-worshop/app
+  docker push eu.gcr.io/k8s-worshop/app:"${tag}"
 }
 
 function scale {
@@ -64,11 +69,15 @@ function scale {
   kubectl scale deployment app --replicas="${replicas}"
 }
 
+function rollback {
+  kubectl rollout undo deployment/app
+}
+
 readonly command="${1:-}"
 
 case "$command" in
   build)
-    build
+    build "${2:-}"
     ;;
   provision)
     provision
@@ -83,10 +92,13 @@ case "$command" in
     deploy
     ;;
   publish)
-    publish
+    publish "${2:-}"
     ;;
   scale)
     scale "${2:-}"
+    ;;
+  rollback)
+    rollback
     ;;
   *)
     display_usage
